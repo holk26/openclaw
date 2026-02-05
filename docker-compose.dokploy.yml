@@ -1,0 +1,65 @@
+services:
+  openclaw-gateway:
+    image: ${OPENCLAW_IMAGE:-openclaw:latest}
+    container_name: openclaw-gateway
+    environment:
+      HOME: /home/node
+      TERM: xterm-256color
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      OPENCLAW_GATEWAY_PASSWORD: ${OPENCLAW_GATEWAY_PASSWORD}
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      NODE_ENV: production
+    volumes:
+      - openclaw-config:/home/node/.openclaw
+      - openclaw-workspace:/home/node/.openclaw/workspace
+    init: true
+    restart: unless-stopped
+    command:
+      [
+        "node",
+        "dist/index.js",
+        "gateway",
+        "--bind",
+        "lan",
+        "--port",
+        "18789",
+        "--allow-unconfigured"
+      ]
+    labels:
+      # Traefik configuration for Dokploy
+      - "traefik.enable=true"
+      
+      # HTTP router
+      - "traefik.http.routers.openclaw.rule=Host(`${OPENCLAW_DOMAIN:-openclaw.example.com}`)"
+      - "traefik.http.routers.openclaw.entrypoints=websecure"
+      - "traefik.http.routers.openclaw.tls=true"
+      - "traefik.http.routers.openclaw.tls.certresolver=letsencrypt"
+      
+      # Service configuration
+      - "traefik.http.services.openclaw.loadbalancer.server.port=18789"
+      
+      # Optional: HTTP to HTTPS redirect
+      - "traefik.http.routers.openclaw-http.rule=Host(`${OPENCLAW_DOMAIN:-openclaw.example.com}`)"
+      - "traefik.http.routers.openclaw-http.entrypoints=web"
+      - "traefik.http.routers.openclaw-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
+      
+      # Dokploy metadata
+      - "dokploy.project=openclaw"
+      - "dokploy.service=gateway"
+
+volumes:
+  openclaw-config:
+    driver: local
+  openclaw-workspace:
+    driver: local
+
+networks:
+  default:
+    name: dokploy-network
+    external: true

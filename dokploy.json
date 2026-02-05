@@ -1,0 +1,67 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Dokploy/dokploy/main/apps/dokploy/templates/schema.json",
+  "name": "OpenClaw",
+  "description": "Personal AI Assistant with WhatsApp, Telegram, Discord, and other messaging channels",
+  "logo": "https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-logo-text.png",
+  "links": [
+    {
+      "label": "Documentation",
+      "url": "https://docs.openclaw.ai"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/openclaw/openclaw"
+    },
+    {
+      "label": "Discord",
+      "url": "https://discord.gg/clawd"
+    }
+  ],
+  "tags": ["ai", "chatbot", "assistant", "whatsapp", "telegram", "discord"],
+  "env": [
+    {
+      "key": "OPENCLAW_DOMAIN",
+      "description": "Your domain for OpenClaw (e.g., openclaw.yourdomain.com)",
+      "required": true,
+      "default": "openclaw.example.com"
+    },
+    {
+      "key": "OPENCLAW_GATEWAY_TOKEN",
+      "description": "Gateway authentication token (generate a secure random string)",
+      "required": true,
+      "value": ""
+    },
+    {
+      "key": "OPENCLAW_GATEWAY_PASSWORD",
+      "description": "Optional gateway password (alternative to token)",
+      "required": false,
+      "value": ""
+    },
+    {
+      "key": "CLAUDE_AI_SESSION_KEY",
+      "description": "Claude AI session key (if using Claude)",
+      "required": false,
+      "value": ""
+    },
+    {
+      "key": "OPENAI_API_KEY",
+      "description": "OpenAI API key (if using OpenAI models)",
+      "required": false,
+      "value": ""
+    },
+    {
+      "key": "ANTHROPIC_API_KEY",
+      "description": "Anthropic API key (if using Claude via API)",
+      "required": false,
+      "value": ""
+    },
+    {
+      "key": "OPENCLAW_IMAGE",
+      "description": "Docker image to use",
+      "required": false,
+      "default": "ghcr.io/openclaw/openclaw:latest"
+    }
+  ],
+  "compose": "docker-compose.dokploy.yml",
+  "instructions": "## Getting Started with OpenClaw on Dokploy\n\n1. **Set your domain**: Update OPENCLAW_DOMAIN to your actual domain\n2. **Generate token**: Create a secure random token for OPENCLAW_GATEWAY_TOKEN\n3. **Add API keys**: Configure your AI provider keys (Claude, OpenAI, etc.)\n4. **Deploy**: Click deploy and wait for the container to start\n5. **Access**: Visit https://your-domain.com to access the Control UI\n6. **Onboarding**: Run onboarding via CLI or use the web interface\n\n## Generating a Secure Token\n\n```bash\nopenssl rand -hex 32\n```\n\n## Post-deployment Setup\n\nAfter deployment, you may want to:\n\n1. **Configure channels**: Set up WhatsApp, Telegram, Discord, etc.\n2. **Configure workspace**: Set up your agent workspace\n3. **Add devices**: Pair your devices with the gateway\n\nFor full documentation, visit: https://docs.openclaw.ai\n\n## Security Notes\n\n- Always use a strong, random OPENCLAW_GATEWAY_TOKEN\n- Keep your API keys secure and never commit them to version control\n- The gateway binds to LAN and uses Traefik for HTTPS termination\n- Traefik automatically handles SSL certificates via Let's Encrypt"
+}
