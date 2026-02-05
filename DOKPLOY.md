@@ -14,7 +14,12 @@ Deploy OpenClaw on your VPS using Dokploy with automatic SSL via Traefik.
 
 1. **Clone or download this repository**
 
-2. **Copy environment template**:
+2. **Run the setup script** (optional - helps configure environment):
+   ```bash
+   ./scripts/dokploy-setup.sh
+   ```
+   
+   Or manually copy the environment template:
    ```bash
    cp .env.dokploy .env
    ```

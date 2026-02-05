@@ -53,13 +53,25 @@ git clone https://github.com/openclaw/openclaw.git
 cd openclaw
 ```
 
-2. **Copy the Dokploy environment template**:
+2. **Run the setup script** (recommended):
+
+```bash
+./scripts/dokploy-setup.sh
+```
+
+This interactive script will:
+- Copy the environment template
+- Prompt for your domain
+- Generate a secure gateway token
+- Update your `.env` file
+
+Or manually copy the template:
 
 ```bash
 cp .env.dokploy .env
 ```
 
-3. **Edit `.env`** and configure your settings:
+3. **Edit `.env`** and add your AI provider credentials:
 
 ```bash
 # Required: Your domain
