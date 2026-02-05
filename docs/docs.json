@@ -1013,6 +1013,7 @@
                   "gateway/remote",
                   "gateway/remote-gateway-readme",
                   "gateway/tailscale",
+                  "platforms/dokploy",
                   "platforms/fly",
                   "platforms/hetzner",
                   "platforms/gcp",
